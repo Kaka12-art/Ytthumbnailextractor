@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Thumbnail Extractor</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #ff6b6b, #f8e71c);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ff4b4b;
+        }
+
+        #thumbnailContainer {
+            margin-top: 20px;
+        }
+
+        #thumbnailContainer img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Thumbnail Extractor</h1>
+        <input type="text" id="videoUrl" placeholder="Enter YouTube Video URL">
+        <button onclick="extractThumbnail()">Get Thumbnail</button>
+        <div id="thumbnailContainer"></div>
+    </div>
+    <script>
+        function extractThumbnail() {
+            const videoUrl = document.getElementById('videoUrl').value;
+            const videoId = getVideoIdFromUrl(videoUrl);
+            
+            if (videoId) {
+                const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                document.getElementById('thumbnailContainer').innerHTML = `<img src="${thumbnailUrl}" alt="Thumbnail">`;
+            } else {
+                document.getElementById('thumbnailContainer').innerHTML = 'Invalid URL';
+            }
+        }
+
+        function getVideoIdFromUrl(url) {
+            const urlObj = new URL(url);
+            if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
+                return urlObj.searchParams.get('v');
+            } else if (urlObj.hostname === 'youtu.be') {
+                return urlObj.pathname.split('/')[1];
+            } else {
+                return null;
+            }
+        }
+    </script>
+</body>
+</html>
